@@ -73,7 +73,8 @@ exports.request = function (options, callback) {
     }
 
     if (typeof options === 'string') {
-        options = { url: options };
+    	final = encodeURIComponent(options);
+        options = { url: final };
     } else {
         options = exports.copy(options);
     }
