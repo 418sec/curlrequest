@@ -73,8 +73,9 @@ exports.request = function (options, callback) {
     }
 
     if (typeof options === 'string') {
-    	final = encodeURIComponent(options);
-        options = { url: final };
+       check_http = options.replace(/^https?\:\/\//i, "");
+       final = encodeURIComponent(check_http);
+       options = { url: final };
     } else {
         options = exports.copy(options);
     }
