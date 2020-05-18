@@ -74,16 +74,17 @@ exports.request = function (options, callback) {
 
     if (typeof options === 'string') {
         var patternHttp = /^((http):\/\/)/;
-		    var patternHttps = /^((https):\/\/)/;
-		    if(patternHttp.test(options)) {
-    	  check_http = options.replace(/(^\w+:|^)\/\//, '');
-    	  final = "http://" + encodeURIComponent(check_http);
-		    }
-		    if(patternHttps.test(options)) {
-  		   check_https = options.replace(/(^\w+:|^)\/\//, '');
-  		   final = "https://" + encodeURIComponent(check_https);
-		    }
-       options = { url: final };
+	var patternHttps = /^((https):\/\/)/;
+	if(patternHttp.test(options)) {
+    	check_http = options.replace(/(^\w+:|^)\/\//, '');
+    	final = "http://" + encodeURIComponent(check_http);}
+	if(patternHttps.test(options)) {
+        check_https = options.replace(/(^\w+:|^)\/\//, '');
+  	final = "https://" + encodeURIComponent(check_https);}
+	if(!patternHttp.test(options) && !patternHttps.test(options)) {
+        final = encodeURIComponent(options);
+	}
+        options = { url: final };
     } else {
         options = exports.copy(options);
     }
