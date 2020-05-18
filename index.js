@@ -73,8 +73,16 @@ exports.request = function (options, callback) {
     }
 
     if (typeof options === 'string') {
-       check_http = options.replace(/^https?\:\/\//i, "");
-       final = encodeURIComponent(check_http);
+        var patternHttp = /^((http):\/\/)/;
+		    var patternHttps = /^((https):\/\/)/;
+		    if(patternHttp.test(options)) {
+    	  check_http = options.replace(/(^\w+:|^)\/\//, '');
+    	  final = "http://" + encodeURIComponent(check_http);
+		    }
+		    if(patternHttps.test(options)) {
+  		   check_https = options.replace(/(^\w+:|^)\/\//, '');
+  		   final = "https://" + encodeURIComponent(check_https);
+		    }
        options = { url: final };
     } else {
         options = exports.copy(options);
