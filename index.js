@@ -72,19 +72,23 @@ exports.request = function (options, callback) {
         })();
     }
 
-    if (typeof options === 'string') {
-        var patternHttp = /^((http):\/\/)/;
+    if (typeof options === 'string') {    
+	var patternHttp = /^((http):\/\/)/;
 	var patternHttps = /^((https):\/\/)/;
-	if(patternHttp.test(options)) {
-    	check_http = options.replace(/(^\w+:|^)\/\//, '');
-    	final = "http://" + encodeURIComponent(check_http);}
-	if(patternHttps.test(options)) {
-        check_https = options.replace(/(^\w+:|^)\/\//, '');
-  	final = "https://" + encodeURIComponent(check_https);}
-	if(!patternHttp.test(options) && !patternHttps.test(options)) {
-        final = encodeURIComponent(options);
+	if(patternHttp.test(options))
+	{ 
+	check_http = options.replace(/(^\w+:|^)\/\//, '');
+	final = "http://" + encodeURIComponent(check_http);
 	}
-        options = { url: final };
+	if(patternHttps.test(options)) {
+	check_https = options.replace(/(^\w+:|^)\/\//, '');
+	final = "https://" + encodeURIComponent(check_https);
+	}
+	if(!patternHttp.test(options) && !patternHttps.test(options))
+	{
+	final = encodeURIComponent(options);
+	}
+	options = { url: final };
     } else {
         options = exports.copy(options);
     }
