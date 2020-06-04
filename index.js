@@ -32,6 +32,10 @@ var default_headers = {
   , 'Accept-Language': 'en-US,en;q=0.8'
 };
 
+
+// base on https://www.regextester.com/94502
+var urlMatcher = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+
 /**
  * Make a request with cURL.
  *
@@ -140,6 +144,11 @@ exports.request = function (options, callback) {
             finish();
             if (curl && curl.kill) curl.kill('SIGKILL');
         }, 1000 * options['max-time']);
+    }
+
+    if (typeof options.url === "string" && !isUrl(options.url)) {
+        err = 'URL malformed. The syntax was not correct.', stdout = null;
+        return finish();
     }
 
     //Default encoding is utf8. Set encoding = null to get a buffer
@@ -329,6 +338,10 @@ exports.request = function (options, callback) {
         });
     });
 };
+
+function isUrl(url) {
+   return urlMatcher.test(url)
+}
 
 /**
  * Expose a helper for scraping urls from a page.
