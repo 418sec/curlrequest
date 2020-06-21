@@ -235,8 +235,18 @@ exports.request = function (options, callback) {
     }
 
     if (options.file) {
+        var path = require('path');
+        var cwd = process.cwd() + "/";
+        //Create an absolute path free of ..
+        var file = path.join(cwd, options.file);
+
+        //Check that our current working directory is at the start of the our file path
+        if (file.indexOf(cwd) !== 0) {
+            throw "File not found in the current directory."
+        }
+
         cmd = 'cat';
-        args = [options.file];
+        args = [file];
     }
 
     //Simulate the spawn?
